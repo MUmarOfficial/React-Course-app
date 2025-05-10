@@ -1,5 +1,7 @@
 import { SyntheticEvent } from "react";
 import { useState } from "react";
+// import Button from "./Button";
+import Button from '@mui/material/Button';
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -36,7 +38,8 @@ export const LoginForm = () => {
           placeholder="Password"
           className="p-2 rounded-xl"
         />
-        <button type="submit">Login</button>
+        {/* <Button type="submit" text="Login" /> */}
+        <Button variant="outlined">Login</Button>
       </form>
     </section>
   );

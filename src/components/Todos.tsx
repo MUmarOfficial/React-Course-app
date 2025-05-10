@@ -1,8 +1,9 @@
 import { useState } from "react";
+import TodoItem from "./TodoItem";
 
 const Todos = () => {
   const [todos, setTodos] = useState([
-    { id: 1, text: "Learn React", completed: false },
+     { id: 1, text: "Learn React", completed: false },
     { id: 2, text: "Learn TypeScript", completed: false },
     { id: 3, text: "Build a Todo App", completed: false },
     { id: 4, text: "Learn Redux", completed: false },
@@ -18,29 +19,45 @@ const Todos = () => {
     { id: 14, text: "Learn MySQL", completed: false },
     { id: 15, text: "Learn SQLite", completed: false },
   ]);
+  const [person, setPerson] = useState({
+    name: 'Umar',
+    designation: 'Software Engineer'
+  })
+  const deleteItem = (itemId: number) => {
+    const filteredTodos = todos.filter(
+      todo => todo.id !== itemId
+    );
+    setTodos(filteredTodos);
+  };
 
-  const deleteItem = (id: number) => {
-    setTodos(todos.filter((itemEL) => itemEL.id !== id));
+  const addNewTodo = () => {
+    setTodos([
+      {
+        text: "new Todo",
+        id: Date.now(),
+        completed: false
+      },
+      ...todos,
+    ]);
   };
 
   return (
     <ul className="flex w-[1024px] flex-wrap p-4 gap-4">
-      {todos.map((todo) => (
-        <li
-          key={todo.id}
-          className="flex gap-3 justify-between items-center p-2 mb-2 bg-transparent py-4 px-8 rounded-md text-white  border hover:border hover:border-blue-500 transition-all duration-300 ease-in-out shadow-md shadow-black/50 cursor-pointer w-[300px] h-[100px]"
-        >
-          <span className="text-lg">{todo.text}</span>
-          <button
-            onClick={() => {
-              deleteItem(todo.id);
-            }}
-            className="bg-red-500 text-white px-2 py-1 rounded"
-          >
-            Delete
-          </button>
-        </li>
-      ))}
+      <button className="ml-18 m-4 h-14" onClick={() => {
+        setPerson({
+          ...person,
+          name: 'Muhammad Umar'
+        })
+      }}>Update name</button>
+      <li className="p-2 mb-2 bg-transparent py-4 px-8 rounded-md text-white  border hover:border hover:border-blue-500 transition-all duration-300 ease-in-out shadow-md shadow-black/50 cursor-pointer w-[400px] h-[100px]">{JSON.stringify(person)}</li>
+      <li>
+        <button className="m-4 h-14" onClick={addNewTodo}>Click me to add new todo</button>
+      </li>
+      {todos.map((todoItem) => {
+        return (
+          <TodoItem key={todoItem.id} item={todoItem} onDelete={deleteItem} />
+        );
+      })}
     </ul>
   );
 };
