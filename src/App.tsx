@@ -1,53 +1,48 @@
 import "./App.css";
-// import AutoCounter from "./components/AutoCounter.tsx";
-// import PostsPage from "./PostsPage.tsx";
-// import Cart from "./components/Cart";
-// import Counter from "./components/Counter";
-import LoginForm from "./components/LoginForm";
-// import LoginClassForm from "./components/LoginClassForm";
-// import Todos from "./components/Todos.tsx";
-// import WelcomeMessage from "./components/WelcomeMessage.tsx";
-// import { useState } from "react";
+import Todos from "./components/Todos";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { useEffect, useState } from "react";
+import { getTodos } from "./api/Todos/todos-api";
+import { Todo } from "./types";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 const App = () => {
-  // const [showCounter, setShowCounter] = useState(true);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [FinishedCount, setFinishedCount] = useState(0);
+
+  useEffect(() => {
+    console.log("App component mounted");
+    getTodos().then((todosFromServer) => {
+      console.log(todosFromServer);
+      setTodos(todosFromServer);
+    });
+  }, []);
+
+  useEffect(() => {
+    const completedTodos = todos.filter((todo) => todo.completed).length;
+    setFinishedCount(completedTodos);
+  }, [todos]);
+
   return (
-    <main className="flex flex-col justify-center items-center gap-6 ">
-      {/* <section className="flex justify-center items-center gap-6">
-        <Counter />
-        <Cart />
-      </section> */}
-      <section className="flex justify-center items-center gap-6">
-        <LoginForm />
-        {/* <LoginClassForm /> */}
-      </section>
-      {/* <section className="flex flex-col justify-center items-center gap-6 px-24 py-8 border rounded-3xl text-white shadow-2xl shadow-black/50 bg-black/50 backdrop-blur-md">
-        <h1 className="text-4xl font-semibold">Todos</h1>
-        <div className="flex">
-          <Todos />
-        </div>
-      </section> */}
-      {/*<section className="flex flex-col justify-center items-center gap-6 px-24 py-8 border rounded-3xl text-white shadow-2xl shadow-black/50 bg-black/50 backdrop-blur-md">
-        <WelcomeMessage
-          isLoggedIn={true}
-          user={{
-            name: "Umar",
-            type:"guest",
-          }}
-        />
-      </section> */}
-    </main>
-    // <main className="flex flex-col justify-center items-center gap-6 ">
-    //   {showCounter && <AutoCounter />}
-    //   <button
-    //     onClick={() => {
-    //       setShowCounter((show) => !show);
-    //     }}
-    //   >
-    //     Toggle show counter
-    //   </button>
-    //   <PostsPage></PostsPage>
-    // </main>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <main className="h-full">
+        <section className="flex flex-col justify-center items-center gap-15 px-36 py-18 border border-amber-100 rounded-3xl text-white shadow-md shadow-black/50  backdrop-blur-md">
+          <Todos TodoArray={todos} />
+          <div className="text-center text-lg">
+            <p>Total Todos: {todos.length}</p>
+            <p>Completed Todos: {FinishedCount}</p>
+            <p>Pending Todos: {todos.length - FinishedCount}</p>
+          </div>
+        </section>
+      </main>
+    </ThemeProvider>
   );
 };
 
