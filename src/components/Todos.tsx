@@ -2,11 +2,11 @@ import { FC, useState } from "react";
 import TodoItem from "./TodoItem";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { Todo } from "../types";
+import { Todo } from "../types/types";
 
 type TodosProps = {
   TodoArray: Todo[];
-}
+};
 const Todos: FC<TodosProps> = () => {
   const [todos, setTodos] = useState([
     { id: 1, text: "Learn React", completed: false },
@@ -85,7 +85,6 @@ const Todos: FC<TodosProps> = () => {
             <TodoItem key={todoItem.id} item={todoItem} onDelete={deleteItem} />
           );
         })}
-       
       </ul>
     </>
   );

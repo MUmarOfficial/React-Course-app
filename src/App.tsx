@@ -1,10 +1,10 @@
 import "./App.css";
-import Todos from "./components/Todos";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useEffect, useState } from "react";
-import { getTodos } from "./api/Todos/todos-api";
-import { Todo } from "./types";
+import Notes from "./components/Notes";
+import { useState } from "react";
+import { Note } from "./types/Note";
+import { AppContext } from "./AppContext";
 
 const darkTheme = createTheme({
   palette: {
@@ -13,36 +13,70 @@ const darkTheme = createTheme({
 });
 
 const App = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [FinishedCount, setFinishedCount] = useState(0);
+  const [notes, setNotes] = useState<Note[]>([
+    {
+      id: 1,
+      title: "First Note",
+      content: "This is the content of the first note.",
+      starred: false,
+    },
+    {
+      id: 2,
+      title: "Second Note",
+      content: "This is the content of the second note.",
+      starred: true,
+    },
+    {
+      id: 3,
+      title: "Third Note",
+      content: "This is the content of the third note.",
+      starred: false,
+    },
+    {
+      id: 4,
+      title: "Fourth Note",
+      content: "This is the content of the fourth note.",
+      starred: true,
+    },
+    {
+      id: 5,
+      title: "Fifth Note",
+      content: "This is the content of the fifth note.",
+      starred: false,
+    },
+    {
+      id: 6,
+      title: "Sixth Note",
+      content: "This is the content of the sixth note.",
+      starred: true,
+    },
+  ]);
 
-  useEffect(() => {
-    console.log("App component mounted");
-    getTodos().then((todosFromServer) => {
-      console.log(todosFromServer);
-      setTodos(todosFromServer);
-    });
-  }, []);
+  const handleDelete = (id: number) => {
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+  };
 
-  useEffect(() => {
-    const completedTodos = todos.filter((todo) => todo.completed).length;
-    setFinishedCount(completedTodos);
-  }, [todos]);
+  const handleStarChange = (id: number, starred: boolean) => {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) => (note.id === id ? { ...note, starred } : note))
+    );
+  };
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <main className="h-full">
-        <section className="flex flex-col justify-center items-center gap-15 px-36 py-18 border border-amber-100 rounded-3xl text-white shadow-md shadow-black/50  backdrop-blur-md">
-          <Todos TodoArray={todos} />
-          <div className="text-center text-lg">
-            <p>Total Todos: {todos.length}</p>
-            <p>Completed Todos: {FinishedCount}</p>
-            <p>Pending Todos: {todos.length - FinishedCount}</p>
-          </div>
-        </section>
-      </main>
-    </ThemeProvider>
+    <AppContext.Provider
+      value={{
+        notes,
+        onStarChange: handleStarChange,
+        onDelete: handleDelete,
+      }}
+    >
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <main className="h-full">
+          <Notes />
+        </main>
+      </ThemeProvider>
+    </AppContext.Provider>
   );
 };
 

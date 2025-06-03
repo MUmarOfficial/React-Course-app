@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Todo } from "../types";
+import { Todo } from "../types/types";
 
 type TodoItemProps = {
   item: Todo;
