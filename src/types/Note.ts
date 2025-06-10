@@ -1,6 +1,6 @@
 export type Note = {
   id: number;
+  userId: string;
   title: string;
-  content: string;
-  starred: boolean;
+  completed: boolean;
 };

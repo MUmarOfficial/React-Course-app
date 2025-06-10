@@ -15,12 +15,12 @@ const StickyNotes: FC<StickyNotesProps> = ({ note }) => {
   return (
     <li className="bg-transparent p-4 rounded-md shadow-md w-64 border size-50 hover:shadow-lg transition-shadow duration-300">
       <div className="flex justify-between items-center mb-1 w-full h-10">
-        <h2 className="text-xl font-bold mb-2">{note.title}</h2>
+        <h2 className="text-xl font-bold mb-2">{note.userId}</h2>
         <span
           style={{ cursor: "pointer" }}
-          onClick={() => onStarChange(note.id, !note.starred)}
+          onClick={() => onStarChange(note.id, !note.completed)}
         >
-          {note.starred ? (
+          {note.completed ? (
             <StarIcon color="primary" fontSize="small" />
           ) : (
             <StarBorderIcon color="primary" fontSize="small" />
@@ -28,7 +28,7 @@ const StickyNotes: FC<StickyNotesProps> = ({ note }) => {
         </span>
       </div>
       <div className="flex justify-around items-center w-full h-20 mb-2">
-        <p className="text-gray-300">{note.content}</p>
+        <p className="text-gray-300">{note.title}</p>
       </div>
       <div className="flex justify-end items-end mb-3 gap-3 h-10">
         <Button
@@ -41,9 +41,9 @@ const StickyNotes: FC<StickyNotesProps> = ({ note }) => {
         </Button>
         <Button
           variant="outlined"
-          onClick={() => onStarChange(note.id, !note.starred)}
+          onClick={() => onStarChange(note.id, !note.completed)}
         >
-          {note.starred ? "Un star" : "Star"}
+          {note.completed ? "Un star" : "Star"}
         </Button>
       </div>
     </li>
