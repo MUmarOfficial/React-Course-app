@@ -5,7 +5,7 @@ import Notes from "./components/Notes";
 import { useEffect, useState } from "react";
 import { Note } from "./types/Note";
 import { AppContext } from "./AppContext";
-import useWindowResize from "./hooks/UseWindowResize";
+import useWindowResize from "./hooks/useWindowResize";
 import useFetch from "./hooks/useFetch";
 
 const darkTheme = createTheme({
